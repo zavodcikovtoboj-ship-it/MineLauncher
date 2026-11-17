@@ -8,7 +8,7 @@ const dns = require('dns').promises;
 const { Transform, Readable } = require('stream');
 const { pipeline } = require('stream/promises');
 
-const USER_AGENT = 'MineLauncher/1.0.1 (+https://localhost)';
+const USER_AGENT = 'MineLauncher/1.0.2 (+https://localhost)';
 
 const network = {
   speedLimitKbps: 0,

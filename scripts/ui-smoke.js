@@ -237,7 +237,7 @@ function connect(url) {
       },
     })`);
     console.log('layout:', JSON.stringify(layout));
-    if (!/MineLauncher 1\.0\.1/.test(layout.footer)) {
+    if (!/MineLauncher 1\.0\.2/.test(layout.footer)) {
       throw new Error(`Неверная версия в подвале: ${layout.footer}`);
     }
     if (Object.values(layout.modals).some((value) => !value)) {
