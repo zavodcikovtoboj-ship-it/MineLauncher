@@ -1,0 +1,96 @@
+MineLauncher — проприетарное программное обеспечение
+MineLauncher — proprietary software
+
+Copyright © 2026 MineLauncher. Все права защищены. / All rights reserved.
+
+--------------------------------------------------------------------------
+РУССКИЙ
+--------------------------------------------------------------------------
+
+Настоящая лицензия распространяется на исходный код, сборочные скрипты,
+документацию, графические материалы и готовые сборки MineLauncher
+(далее — «Программа»).
+
+1. Разрешается бесплатно использовать Программу по прямому назначению —
+   запускать её и играть в Minecraft, в том числе в личных, некоммерческих
+   целях, а также передавать неизменённые официальные сборки другим людям
+   со ссылкой на официальный репозиторий проекта.
+
+2. Без предварительного письменного разрешения правообладателя ЗАПРЕЩАЕТСЯ:
+
+   а) копировать, публиковать или иным образом распространять исходный код
+      Программы, полностью или частично, в том числе в виде форков;
+   б) изменять, переводить, декомпилировать, дизассемблировать или иным
+      способом извлекать исходный код из готовых сборок, кроме случаев,
+      прямо разрешённых применимым законодательством;
+   в) распространять изменённые сборки или сборки, собранные из исходного
+      кода Программы;
+   г) продавать, сдавать в аренду или включать Программу в платные продукты
+      и сервисы;
+   д) удалять или скрывать уведомления об авторских правах, названии и
+      атрибуции проекта.
+
+3. Публикация исходного кода в открытом репозитории не является передачей
+   прав: код предоставляется для ознакомления, а не для повторного
+   использования.
+
+4. Использование сторонних библиотек регулируется их собственными
+   лицензиями (в том числе MIT, ISC, Apache-2.0). Настоящая лицензия не
+   ограничивает и не изменяет их условия.
+
+5. ПРОГРАММА ПРЕДОСТАВЛЯЕТСЯ «КАК ЕСТЬ», БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ЯВНЫХ
+   ИЛИ ПОДРАЗУМЕВАЕМЫХ. АВТОР НЕ НЕСЁТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБОЙ УЩЕРБ,
+   ПОТЕРЮ ДАННЫХ ИЛИ ИНЫЕ ПОСЛЕДСТВИЯ, ВОЗНИКШИЕ В РЕЗУЛЬТАТЕ
+   ИСПОЛЬЗОВАНИЯ ИЛИ НЕВОЗМОЖНОСТИ ИСПОЛЬЗОВАНИЯ ПРОГРАММЫ.
+
+6. MineLauncher не связан с Mojang AB, Microsoft Corporation и Discord Inc.
+   Minecraft является товарным знаком Mojang AB.
+
+7. Нарушение условий настоящей лицензии прекращает право использования
+   Программы. Правообладатель вправе защищать свои права всеми законными
+   способами.
+
+По вопросам разрешений и сотрудничества: https://github.com/zavodcikovtoboj-ship-it
+
+--------------------------------------------------------------------------
+ENGLISH
+--------------------------------------------------------------------------
+
+This license applies to the source code, build scripts, documentation,
+graphics and ready-to-use builds of MineLauncher (the "Software").
+
+1. You may use the Software for its intended purpose — running it and
+   playing Minecraft — free of charge, including for personal,
+   non-commercial use, and you may share unmodified official builds with
+   others along with a link to the official repository.
+
+2. Without prior written permission from the copyright holder you may NOT:
+
+   a) copy, publish or otherwise distribute the source code of the Software,
+      in whole or in part, including as a fork;
+   b) modify, translate, decompile, disassemble or otherwise extract the
+      source code from the builds, except where expressly permitted by
+      applicable law;
+   c) distribute modified builds or builds compiled from the Software's
+      source code;
+   d) sell, rent or include the Software in paid products or services;
+   e) remove or hide copyright notices, the project name or attribution.
+
+3. Publishing the source code in a public repository does not grant any
+   rights: the code is provided for viewing, not for reuse.
+
+4. Third-party libraries remain under their own licenses (including MIT,
+   ISC and Apache-2.0). This license does not restrict or alter their terms.
+
+5. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED. THE AUTHOR SHALL NOT BE LIABLE FOR ANY DAMAGES, DATA LOSS OR
+   OTHER CONSEQUENCES ARISING FROM THE USE OF OR INABILITY TO USE THE
+   SOFTWARE.
+
+6. MineLauncher is not affiliated with Mojang AB, Microsoft Corporation or
+   Discord Inc. Minecraft is a trademark of Mojang AB.
+
+7. Violation of these terms terminates your right to use the Software. The
+   copyright holder may enforce their rights by all lawful means.
+
+For permissions and cooperation: https://github.com/zavodcikovtoboj-ship-it

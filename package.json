@@ -5,7 +5,7 @@
   "description": "Minecraft launcher with loaders, modpacks, offline and Microsoft accounts",
   "main": "electron/main.js",
   "author": "Lewis",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "start": "electron .",
     "dry-run": "node scripts/dry-run.js",
