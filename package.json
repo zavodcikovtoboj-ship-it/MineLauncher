@@ -1,0 +1,72 @@
+{
+  "name": "mine-launcher",
+  "productName": "MineLauncher",
+  "version": "1.0.0",
+  "description": "Minecraft launcher with loaders, modpacks, offline and Microsoft accounts",
+  "main": "electron/main.js",
+  "author": "Lewis",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dry-run": "node scripts/dry-run.js",
+    "e2e": "node scripts/e2e.js",
+    "modpack-e2e": "node scripts/modpack-e2e.js",
+    "regression": "node scripts/regression.js",
+    "ui-smoke": "node scripts/ui-smoke.js",
+    "make-icon": "node scripts/make-icon.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^45.3.2",
+    "electron-builder": "^26.18.0"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16"
+  },
+  "build": {
+    "appId": "ru.minelauncher.app",
+    "productName": "MineLauncher",
+    "copyright": "Copyright © 2026 MineLauncher",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**/*",
+      "renderer/**/*",
+      "build/icon.png",
+      "package.json"
+    ],
+    "asar": true,
+    "npmRebuild": false,
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "MineLauncher-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MineLauncher",
+      "artifactName": "MineLauncher-Setup-${version}.${ext}",
+      "uninstallDisplayName": "MineLauncher"
+    },
+    "portable": {
+      "artifactName": "MineLauncher-${version}-portable.${ext}"
+    }
+  }
+}

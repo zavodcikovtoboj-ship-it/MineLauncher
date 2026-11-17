@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MineLauncher</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="dark" data-accent="green">
+  <header class="titlebar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <span class="brand-name">MineLauncher</span>
+    </div>
+    <div class="titlebar-drag"></div>
+    <div class="win-controls">
+      <button id="win-min" class="win-btn" title="Свернуть" aria-label="Свернуть">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5h6" stroke="currentColor" stroke-width="1.4"/></svg>
+      </button>
+      <button id="win-max" class="win-btn" title="Развернуть" aria-label="Развернуть">
+        <svg width="10" height="10" viewBox="0 0 10 10"><rect x="2.2" y="2.2" width="5.6" height="5.6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      </button>
+      <button id="win-close" class="win-btn close" title="Закрыть" aria-label="Закрыть">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2.4 2.4l5.2 5.2M7.6 2.4L2.4 7.6" stroke="currentColor" stroke-width="1.4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <nav class="nav">
+        <button class="nav-item active" data-page="play">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4.8v10.4L15.4 10 7 4.8z" fill="currentColor"/></svg>
+          <span data-i18n="nav.play">Играть</span>
+        </button>
+        <button class="nav-item" data-page="instances">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3 3.4 6.6v6.8L10 17l6.6-3.6V6.6L10 3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M3.6 6.7 10 10.2l6.4-3.5M10 10.2V16.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <span data-i18n="nav.instances">Инстансы</span>
+        </button>
+        <button class="nav-item" data-page="servers">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.6 10h12.8M10 3.6c1.9 1.8 2.9 4 2.9 6.4S11.9 14.6 10 16.4C8.1 14.6 7.1 12.4 7.1 10S8.1 5.4 10 3.6z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+          <span data-i18n="nav.servers">Серверы</span>
+        </button>
+        <button class="nav-item" data-page="stats">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 15.6V9.2M8 15.6V5.4M12 15.6v-4.2M16 15.6V7.4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+          <span data-i18n="nav.stats">Статистика</span>
+        </button>
+        <button class="nav-item" data-page="account">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 16.4c.8-3 3.1-4.6 6-4.6s5.2 1.6 6 4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span data-i18n="nav.account">Аккаунт</span>
+        </button>
+        <button class="nav-item" data-page="settings">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 3.2v2.2M10 14.6v2.2M3.2 10h2.2M14.6 10h2.2M5.2 5.2l1.6 1.6M13.2 13.2l1.6 1.6M14.8 5.2l-1.6 1.6M6.8 13.2l-1.6 1.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span data-i18n="nav.settings">Настройки</span>
+        </button>
+        <button class="nav-item" data-page="logs">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3.2" y="4" width="13.6" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6.4 8l2.2 2.2-2.2 2.2M10.4 12.4h3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="nav.logs">Консоль</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="user-chip" id="user-chip" data-page="account">
+          <div class="avatar" id="avatar">P</div>
+          <div class="user-meta">
+            <div class="user-name" id="chip-name">Player</div>
+            <div class="user-type" id="chip-type">Офлайн</div>
+          </div>
+        </button>
+        <div id="app-version" class="version-tag">MineLauncher</div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <!-- ==================== PLAY ==================== -->
+      <section id="page-play" class="page active">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow" data-i18n="play.eyebrow">MINECRAFT: JAVA EDITION</div>
+            <h1 id="hero-title">Готов к запуску</h1>
+            <p id="hero-sub">Выберите версию и нажмите «Играть».</p>
+            <div class="hero-badges">
+              <span class="badge accent" id="badge-version">—</span>
+              <span class="badge" id="badge-type">release</span>
+              <span class="badge" id="badge-date"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="field-grid">
+            <div class="field">
+              <label for="version-select" data-i18n="play.version">Версия игры</label>
+              <div class="inline">
+                <select id="version-select"></select>
+                <button id="refresh-versions" class="icon-btn" title="Обновить список версий" aria-label="Обновить список версий">
+                  <svg viewBox="0 0 20 20" width="16" height="16"><path d="M16 10a6 6 0 1 1-1.8-4.3M16 3.4v3.2h-3.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button id="open-modpacks" class="btn ghost pack-open-btn" title="Установить модпак с Modrinth" data-i18n="play.packs">Модпаки</button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="play-username" data-i18n="play.username">Никнейм</label>
+              <input id="play-username" maxlength="16" spellcheck="false" autocomplete="off" placeholder="Player">
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row">
+              <label for="ram-range" data-i18n="play.memory">Выделяемая память</label>
+              <span id="ram-value" class="value">4 ГБ</span>
+            </div>
+            <input type="range" id="ram-range" min="1024" max="16384" step="512">
+          </div>
+
+          <button id="play-btn" class="play-btn">
+            <span class="play-glyph" id="play-glyph">▶</span>
+            <span id="play-label">Играть</span>
+          </button>
+
+          <div class="quick-actions">
+            <button id="play-content" class="btn ghost" data-i18n="play.content">Контент</button>
+            <button id="play-maintenance" class="btn ghost" data-i18n="play.maintenance">Обслуживание</button>
+          </div>
+
+          <div id="progress-wrap" class="progress-wrap hidden">
+            <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+            <div class="progress-meta">
+              <span id="progress-stage">Подготовка</span>
+              <span id="progress-file" class="progress-file"></span>
+              <span id="progress-percent"></span>
+            </div>
+          </div>
+
+          <div id="error-box" class="error-box hidden">
+            <span id="error-text"></span>
+            <button id="error-action" class="mini-btn hidden"></button>
+          </div>
+
+          <div class="status-row">
+            <div id="status-line" class="status-line">Java: проверка…</div>
+            <button id="java-cta" class="java-cta hidden">Скачать Java</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== INSTANCES ==================== -->
+      <section id="page-instances" class="page">
+        <div class="page-head with-actions">
+          <div>
+            <h2 data-i18n="instances.title">Инстансы</h2>
+            <p class="muted" data-i18n="instances.sub">Свои сборки с отдельными модами, настройками и мирами.</p>
+          </div>
+          <div class="row-buttons flush">
+            <button id="instance-import" class="btn ghost" data-i18n="instances.import">Импорт инстанса</button>
+            <button id="instances-refresh" class="btn ghost" data-i18n="common.refresh">Обновить</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="instances.createTitle">Новый инстанс</h3>
+          <div class="create-grid">
+            <div class="field">
+              <label for="instance-name" data-i18n="instances.name">Название</label>
+              <input id="instance-name" maxlength="48" spellcheck="false" data-i18n-placeholder="instances.namePlaceholder" placeholder="Например, Tech Pack">
+            </div>
+            <div class="field">
+              <label for="instance-version" data-i18n="instances.version">Версия Minecraft</label>
+              <select id="instance-version"></select>
+            </div>
+            <div class="field">
+              <label for="instance-loader" data-i18n="instances.loader">Загрузчик</label>
+              <select id="instance-loader">
+                <option value="vanilla">Vanilla</option>
+                <option value="fabric">Fabric</option>
+                <option value="forge">Forge</option>
+                <option value="neoforge">NeoForge</option>
+              </select>
+            </div>
+            <div class="field create-action">
+              <button id="instance-create" class="btn primary" data-i18n="instances.create">Создать инстанс</button>
+            </div>
+          </div>
+          <div id="instance-status" class="status-line"></div>
+        </div>
+
+        <div class="section-head">
+          <h3 data-i18n="instances.own">Свои инстансы</h3>
+        </div>
+        <div id="instances-list" class="entity-list"></div>
+
+        <div class="section-head">
+          <div class="section-title">
+            <h3 data-i18n="instances.modpacks">Модпаки</h3>
+            <span id="modpack-update-status" class="status-inline"></span>
+          </div>
+          <button id="instances-modpack-updates" class="btn ghost small-btn" data-i18n="instances.checkUpdates">Проверить обновления модпаков</button>
+        </div>
+        <div id="instances-modpacks" class="entity-list"></div>
+      </section>
+
+      <!-- ==================== SERVERS ==================== -->
+      <section id="page-servers" class="page">
+        <div class="page-head with-actions">
+          <div>
+            <h2 data-i18n="servers.title">Серверы</h2>
+            <p class="muted" data-i18n="servers.sub">Список серверов, статус, онлайн и пинг.</p>
+          </div>
+          <div class="row-buttons flush">
+            <button id="servers-ping-all" class="btn ghost" data-i18n="servers.pingAll">Проверить все</button>
+            <button id="servers-refresh" class="btn ghost" data-i18n="common.refresh">Обновить</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="servers.addTitle">Добавить сервер</h3>
+          <div class="create-grid server-create-grid">
+            <div class="field">
+              <label for="server-name" data-i18n="servers.name">Название</label>
+              <input id="server-name" maxlength="48" spellcheck="false" data-i18n-placeholder="servers.namePlaceholder" placeholder="Мой сервер">
+            </div>
+            <div class="field">
+              <label for="server-address" data-i18n="servers.address">Адрес</label>
+              <input id="server-address" spellcheck="false" data-i18n-placeholder="servers.addressPlaceholder" placeholder="play.example.com:25565">
+            </div>
+            <div class="field create-action">
+              <button id="server-add" class="btn primary" data-i18n="servers.add">Добавить</button>
+            </div>
+          </div>
+          <div id="servers-status" class="status-line"></div>
+        </div>
+
+        <div id="servers-list" class="server-list"></div>
+      </section>
+
+      <!-- ==================== STATS ==================== -->
+      <section id="page-stats" class="page">
+        <div class="page-head with-actions">
+          <div>
+            <h2 data-i18n="stats.title">Статистика</h2>
+            <p class="muted" data-i18n="stats.sub">Запуски, время в игре и последние сессии.</p>
+          </div>
+          <div class="row-buttons flush">
+            <button id="stats-reset" class="btn ghost" data-i18n="stats.reset">Сбросить статистику</button>
+            <button id="stats-refresh" class="btn ghost" data-i18n="common.refresh">Обновить</button>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <span class="stat-label" data-i18n="stats.launches">Запусков</span>
+            <strong id="stats-launches" class="stat-value">0</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label" data-i18n="stats.playtime">Время в игре</span>
+            <strong id="stats-playtime" class="stat-value">0 мин</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label" data-i18n="stats.average">Средняя сессия</span>
+            <strong id="stats-average" class="stat-value">0 мин</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label" data-i18n="stats.crashes">Сбоев</span>
+            <strong id="stats-crashes" class="stat-value">0</strong>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h3 data-i18n="stats.byTarget">По версиям и инстансам</h3>
+            <span id="stats-last" class="status-inline"></span>
+          </div>
+          <div id="stats-by-target" class="table-wrap"></div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="stats.recent">Последние сессии</h3>
+          <div id="stats-recent" class="table-wrap"></div>
+        </div>
+      </section>
+
+      <!-- ==================== ACCOUNT ==================== -->
+      <section id="page-account" class="page">
+        <div class="page-head">
+          <h2 data-i18n="account.title">Аккаунт</h2>
+          <p class="muted" data-i18n="account.sub">Офлайн-ник или лицензионный вход Microsoft.</p>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <h3 data-i18n="account.offlineTitle">Офлайн-аккаунт</h3>
+            <p class="muted small" data-i18n="account.offlineDesc">Одиночная игра и серверы с online-mode=false.</p>
+            <div class="field">
+              <label for="account-username" data-i18n="account.username">Никнейм</label>
+              <input id="account-username" maxlength="16" spellcheck="false" autocomplete="off">
+            </div>
+            <button id="save-offline" class="btn primary" data-i18n="account.useOffline">Использовать офлайн-ник</button>
+          </div>
+
+          <div class="card">
+            <h3 data-i18n="account.msTitle">Microsoft</h3>
+            <p class="muted small" data-i18n="account.msDesc">Лицензионный вход через device code flow. Нужен Azure Client ID приложения с разрешёнными публичными клиентами.</p>
+            <div class="field">
+              <label for="ms-client-id" data-i18n="account.clientId">Azure Client ID</label>
+              <input id="ms-client-id" spellcheck="false" autocomplete="off" placeholder="00000000-0000-0000-0000-000000000000">
+            </div>
+            <div class="account-status" id="ms-status" data-i18n="account.notLogged">Вход не выполнен</div>
+            <div class="row-buttons">
+              <button id="ms-login" class="btn primary" data-i18n="account.login">Войти через Microsoft</button>
+              <button id="ms-logout" class="btn ghost hidden" data-i18n="account.logout">Выйти</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SETTINGS ==================== -->
+      <section id="page-settings" class="page">
+        <div class="page-head">
+          <h2 data-i18n="settings.title">Настройки</h2>
+          <p class="muted" data-i18n="settings.sub">Java, папка игры, сеть, внешний вид и обновления.</p>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="settings.appearance">Внешний вид</h3>
+          <div class="field-grid">
+            <div class="field">
+              <label for="theme-select" data-i18n="settings.theme">Тема</label>
+              <select id="theme-select">
+                <option value="dark" data-i18n="settings.themeDark">Тёмная</option>
+                <option value="light" data-i18n="settings.themeLight">Светлая</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="language-select" data-i18n="settings.language">Язык интерфейса</label>
+              <select id="language-select">
+                <option value="ru">Русский</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label data-i18n="settings.accent">Акцентный цвет</label>
+            <div id="accent-swatches" class="accent-swatches">
+              <button class="accent-swatch" data-accent="green" title="Зелёный" aria-label="Зелёный"></button>
+              <button class="accent-swatch" data-accent="blue" title="Синий" aria-label="Синий"></button>
+              <button class="accent-swatch" data-accent="purple" title="Фиолетовый" aria-label="Фиолетовый"></button>
+              <button class="accent-swatch" data-accent="orange" title="Оранжевый" aria-label="Оранжевый"></button>
+              <button class="accent-swatch" data-accent="red" title="Красный" aria-label="Красный"></button>
+              <button class="accent-swatch" data-accent="cyan" title="Бирюзовый" aria-label="Бирюзовый"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="settings.java">Java</h3>
+          <div class="field">
+            <label for="java-path" data-i18n="settings.javaPath">Путь к java.exe</label>
+            <input id="java-path" spellcheck="false" data-i18n-placeholder="settings.javaAuto" placeholder="Автоопределение">
+          </div>
+          <div class="row-buttons">
+            <button id="java-detect" class="btn" data-i18n="settings.check">Проверить</button>
+            <button id="java-install" class="btn ghost" data-i18n="settings.javaDownload">Скачать Java для версии</button>
+          </div>
+          <div id="java-status" class="status-line">—</div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="settings.game">Игра</h3>
+          <div class="field">
+            <label for="game-dir" data-i18n="settings.gameDir">Папка игры</label>
+            <div class="inline">
+              <input id="game-dir" spellcheck="false">
+              <button id="open-folder" class="btn ghost" data-i18n="settings.openFolder">Открыть</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="jvm-args" data-i18n="settings.jvmArgs">Дополнительные аргументы JVM</label>
+            <input id="jvm-args" spellcheck="false" placeholder="-XX:+UseG1GC -XX:MaxGCPauseMillis=50">
+          </div>
+          <div class="check-row">
+            <label class="check"><input type="checkbox" id="show-snapshots"><span data-i18n="settings.snapshots">Показывать снапшоты</span></label>
+          </div>
+          <div class="check-row">
+            <label class="check"><input type="checkbox" id="custom-resolution"><span data-i18n="settings.resolution">Своё разрешение окна</span></label>
+          </div>
+          <div class="inline res-inputs hidden" id="res-inputs">
+            <input type="number" id="res-width" min="320" max="7680" step="1">
+            <span class="muted">×</span>
+            <input type="number" id="res-height" min="240" max="4320" step="1">
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="settings.network">Сеть и загрузки</h3>
+          <div class="field-grid">
+            <div class="field">
+              <label for="speed-limit" data-i18n="settings.speedLimit">Ограничение скорости</label>
+              <select id="speed-limit">
+                <option value="0" data-i18n="settings.unlimited">Без ограничений</option>
+                <option value="512">512 КБ/с</option>
+                <option value="1024">1 МБ/с</option>
+                <option value="2048">2 МБ/с</option>
+                <option value="4096">4 МБ/с</option>
+                <option value="8192">8 МБ/с</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="mirror-mode" data-i18n="settings.mirror">Зеркало Mojang</label>
+              <select id="mirror-mode">
+                <option value="auto" data-i18n="settings.mirrorAuto">Авто (официальный → BMCLAPI)</option>
+                <option value="official" data-i18n="settings.mirrorOfficial">Только официальные серверы</option>
+                <option value="bmclapi" data-i18n="settings.mirrorBmcl">Сначала BMCLAPI</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-grid">
+            <div class="field">
+              <label for="proxy-mode" data-i18n="settings.proxyMode">Прокси</label>
+              <select id="proxy-mode">
+                <option value="system" data-i18n="settings.proxySystem">Системный</option>
+                <option value="direct" data-i18n="settings.proxyDirect">Без прокси</option>
+                <option value="manual" data-i18n="settings.proxyManual">Вручную</option>
+              </select>
+            </div>
+            <div class="field" id="proxy-row">
+              <label for="proxy-url" data-i18n="settings.proxyUrl">Адрес прокси</label>
+              <input id="proxy-url" spellcheck="false" data-i18n-placeholder="settings.proxyHint" placeholder="Например http://127.0.0.1:8080 или socks5://127.0.0.1:1080">
+            </div>
+          </div>
+          <div class="row-buttons">
+            <button id="net-diagnostics" class="btn" data-i18n="settings.runDiagnostics">Проверить соединение</button>
+          </div>
+          <div id="net-status" class="status-line"></div>
+          <div id="net-results" class="diagnostics-list"></div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="settings.updates">Обновления лаунчера</h3>
+          <div class="check-row">
+            <label class="check"><input type="checkbox" id="auto-update"><span data-i18n="settings.autoUpdate">Проверять обновления при запуске</span></label>
+          </div>
+          <div class="field">
+            <label for="update-feed" data-i18n="settings.feed">Канал обновлений (JSON или GitHub Releases)</label>
+            <input id="update-feed" spellcheck="false" placeholder="https://github.com/user/repo/releases/latest">
+          </div>
+          <div class="row-buttons">
+            <button id="update-check" class="btn" data-i18n="settings.checkUpdates">Проверить сейчас</button>
+            <button id="update-download" class="btn primary hidden" data-i18n="settings.downloadUpdate">Скачать обновление</button>
+            <button id="update-install" class="btn primary hidden" data-i18n="settings.installUpdate">Установить и перезапустить</button>
+          </div>
+          <div id="update-status" class="status-line"></div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="settings.discord">Discord Rich Presence</h3>
+          <p class="muted small" data-i18n="settings.discordAlways">Rich Presence включается автоматически при запуске лаунчера.</p>
+          <div class="field">
+            <label for="discord-client-id" data-i18n="settings.discordClientId">Discord Application ID</label>
+            <input id="discord-client-id" spellcheck="false" placeholder="000000000000000000">
+          </div>
+          <p class="muted small" data-i18n="settings.discordHint">Application ID берётся из приложения Discord: discord.com/developers/applications → New Application → Application ID. Это публичный идентификатор, не секрет.</p>
+          <div class="row-buttons">
+            <button id="discord-portal" class="btn ghost" data-i18n="settings.discordOpen">Открыть Discord Developer Portal</button>
+          </div>
+          <div id="discord-status" class="status-line"></div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="settings.sync">Настройки и миры</h3>
+          <p class="muted small" data-i18n="settings.syncHint">Перенос настроек между компьютерами и резервные копии миров выбранного инстанса.</p>
+          <div class="row-buttons">
+            <button id="sync-export-settings" class="btn ghost" data-i18n="settings.exportSettings">Экспорт настроек</button>
+            <button id="sync-import-settings" class="btn ghost" data-i18n="settings.importSettings">Импорт настроек</button>
+            <button id="sync-export-worlds" class="btn ghost" data-i18n="settings.exportWorlds">Экспорт миров</button>
+            <button id="sync-import-worlds" class="btn ghost" data-i18n="settings.importWorlds">Импорт миров</button>
+          </div>
+          <div id="sync-status" class="status-line"></div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="maintenance.title">Обслуживание</h3>
+          <div class="field-grid">
+            <div class="field">
+              <label for="cleanup-days">Хранить логи, дней</label>
+              <input id="cleanup-days" type="number" min="1" max="365" step="1">
+            </div>
+            <div class="field">
+              <label for="backup-retention">Хранить бэкапов</label>
+              <input id="backup-retention" type="number" min="1" max="100" step="1">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="settings.diagnostics">Диагностика</h3>
+          <div id="app-info" class="status-line">—</div>
+          <div class="row-buttons">
+            <button id="open-logs" class="btn ghost" data-i18n="settings.openLogs">Открыть папку логов</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== LOGS ==================== -->
+      <section id="page-logs" class="page">
+        <div class="page-head with-actions">
+          <div>
+            <h2 data-i18n="log.title">Консоль</h2>
+            <p class="muted" data-i18n="log.sub">Вывод лаунчера и Minecraft.</p>
+          </div>
+          <div class="row-buttons flush">
+            <button id="log-clear" class="btn ghost" data-i18n="log.clear">Очистить</button>
+            <button id="log-open" class="btn ghost" data-i18n="log.folder">Папка логов</button>
+          </div>
+        </div>
+        <pre id="log-output" class="log-output"></pre>
+      </section>
+    </main>
+  </div>
+
+  <!-- ==================== UPDATE BANNER ==================== -->
+  <div id="update-banner" class="update-banner hidden">
+    <div class="update-banner-main">
+      <strong id="update-title">Доступно обновление</strong>
+      <div id="update-notes" class="muted small"></div>
+      <div id="update-banner-progress" class="progress-wrap hidden">
+        <div class="progress-track"><div id="update-progress-bar" class="progress-bar"></div></div>
+        <div class="progress-meta"><span id="update-progress-stage">Загрузка обновления…</span><span id="update-progress-percent"></span></div>
+      </div>
+    </div>
+    <div class="row-buttons flush">
+      <button id="update-banner-download" class="btn primary" data-i18n="update.download">Скачать</button>
+      <button id="update-banner-install" class="btn primary hidden" data-i18n="update.install">Установить</button>
+      <button id="update-banner-later" class="btn ghost" data-i18n="update.later">Позже</button>
+    </div>
+  </div>
+
+  <!-- ==================== DRAG & DROP ==================== -->
+  <div id="drop-overlay" class="drop-overlay hidden">
+    <div class="drop-card">
+      <strong>Отпустите файл</strong>
+      <span>.jar и .zip будут добавлены в контент выбранного инстанса или модпака.</span>
+    </div>
+  </div>
+
+  <!-- ==================== DEVICE CODE ==================== -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <h3>Вход через Microsoft</h3>
+      <p class="muted">Откройте страницу и введите этот код:</p>
+      <div class="device-code" id="device-code">····</div>
+      <div class="row-buttons">
+        <button id="device-open" class="btn primary">Открыть страницу входа</button>
+        <button id="device-cancel" class="btn ghost" data-i18n="common.cancel">Отмена</button>
+      </div>
+      <p class="muted small" id="device-hint">Ожидание подтверждения…</p>
+    </div>
+  </div>
+
+  <!-- ==================== MODPACKS ==================== -->
+  <div id="modpack-modal" class="modal hidden">
+    <div class="modal-card wide">
+      <div class="modal-head">
+        <div>
+          <h3 data-i18n="modpacks.title">Модпаки Modrinth</h3>
+          <p class="muted small" data-i18n="modpacks.sub">Установка .mrpack в отдельную папку. Обычные версии и миры не затрагиваются.</p>
+        </div>
+        <button id="modpack-close" class="win-btn close" title="Закрыть" aria-label="Закрыть">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2.4 2.4l5.2 5.2M7.6 2.4L2.4 7.6" stroke="currentColor" stroke-width="1.4"/></svg>
+        </button>
+      </div>
+
+      <div class="search-row">
+        <input id="modpack-search" spellcheck="false" data-i18n-placeholder="modpacks.searchPlaceholder" placeholder="Название модпака, например Fabulously Optimized">
+        <button id="modpack-search-btn" class="btn primary" data-i18n="modpacks.find">Найти</button>
+      </div>
+
+      <div id="modpack-status" class="status-line">Введите запрос или выберите из популярных.</div>
+
+      <div id="modpack-progress-wrap" class="progress-wrap hidden">
+        <div class="progress-track"><div id="modpack-progress-bar" class="progress-bar"></div></div>
+        <div class="progress-meta">
+          <span id="modpack-progress-stage">Установка</span>
+          <span id="modpack-progress-file" class="progress-file"></span>
+          <span id="modpack-progress-percent"></span>
+        </div>
+      </div>
+
+      <div id="modpack-results" class="pack-list"></div>
+
+      <div class="pack-installed-head">
+        <div class="section-title">
+          <h4 data-i18n="modpacks.installed">Установленные модпаки</h4>
+          <button id="modpack-check-updates" class="mini-link" data-i18n="content.checkUpdates">Проверить обновления</button>
+        </div>
+      </div>
+      <div id="modpack-installed" class="pack-installed"></div>
+    </div>
+  </div>
+
+  <!-- ==================== CONTENT ==================== -->
+  <div id="content-modal" class="modal hidden">
+    <div class="modal-card wide content-modal-card">
+      <div class="modal-head">
+        <div>
+          <h3 data-i18n="content.title">Контент</h3>
+          <p class="muted small">Моды, наборы ресурсов и шейдеры Modrinth для выбранного инстанса.</p>
+        </div>
+        <button id="content-close" class="win-btn close" title="Закрыть" aria-label="Закрыть">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2.4 2.4l5.2 5.2M7.6 2.4L2.4 7.6" stroke="currentColor" stroke-width="1.4"/></svg>
+        </button>
+      </div>
+
+      <div class="content-toolbar">
+        <div class="field">
+          <label for="content-target">Цель</label>
+          <select id="content-target"></select>
+        </div>
+        <button id="content-import" class="btn ghost" data-i18n="content.import">Импорт файла</button>
+      </div>
+
+      <div id="content-warning" class="hint hidden" data-i18n="content.warnVanilla">Для модов нужен Fabric, Forge или NeoForge. Выберите инстанс с загрузчиком.</div>
+
+      <div class="tabs" id="content-tabs">
+        <button class="tab active" data-kind="mods" data-i18n="content.mods">Моды</button>
+        <button class="tab" data-kind="resourcepacks" data-i18n="content.resourcepacks">Наборы ресурсов</button>
+        <button class="tab" data-kind="shaders" data-i18n="content.shaders">Шейдеры</button>
+      </div>
+
+      <div class="search-row">
+        <input id="content-search" spellcheck="false" data-i18n-placeholder="content.searchPlaceholder" placeholder="Поиск на Modrinth">
+        <button id="content-search-btn" class="btn primary" data-i18n="content.search">Найти</button>
+      </div>
+
+      <div id="content-progress-wrap" class="progress-wrap hidden">
+        <div class="progress-track"><div id="content-progress-bar" class="progress-bar"></div></div>
+        <div class="progress-meta">
+          <span id="content-progress-stage">Установка</span>
+          <span id="content-progress-file" class="progress-file"></span>
+          <span id="content-progress-percent"></span>
+        </div>
+      </div>
+
+      <div id="content-status" class="status-line"></div>
+
+      <div class="content-columns">
+        <div class="content-column">
+          <div class="column-head">
+            <h4 data-i18n="common.search">Найти</h4>
+          </div>
+          <div id="content-results" class="pack-list content-list"></div>
+        </div>
+        <div class="content-column">
+          <div class="column-head">
+            <h4 data-i18n="content.installed">Установлено</h4>
+            <div class="row-buttons flush">
+              <button id="content-check-updates" class="mini-link" data-i18n="content.checkUpdates">Проверить обновления</button>
+              <button id="content-conflicts" class="mini-link" data-i18n="content.conflicts">Проверить конфликты</button>
+            </div>
+          </div>
+          <div id="content-installed" class="pack-list content-list"></div>
+          <div id="content-report" class="report hidden"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAINTENANCE ==================== -->
+  <div id="maintenance-modal" class="modal hidden">
+    <div class="modal-card wide maintenance-modal-card">
+      <div class="modal-head">
+        <div>
+          <h3 data-i18n="maintenance.title">Обслуживание</h3>
+          <p class="muted small" id="maintenance-target">Цель не выбрана</p>
+        </div>
+        <button id="maintenance-close" class="win-btn close" title="Закрыть" aria-label="Закрыть">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2.4 2.4l5.2 5.2M7.6 2.4L2.4 7.6" stroke="currentColor" stroke-width="1.4"/></svg>
+        </button>
+      </div>
+
+      <div class="maintenance-grid">
+        <div class="card compact">
+          <h4>Проверка и ремонт</h4>
+          <div class="row-buttons">
+            <button id="maintenance-verify" class="btn" data-i18n="maintenance.verify">Проверить файлы</button>
+            <button id="maintenance-repair" class="btn primary" data-i18n="maintenance.repair">Восстановить</button>
+          </div>
+          <div class="row-buttons">
+            <button id="maintenance-loader" class="btn ghost" data-i18n="maintenance.reinstallLoader">Переустановить загрузчик</button>
+            <button id="maintenance-crash" class="btn ghost" data-i18n="maintenance.crash">Анализ краша</button>
+          </div>
+          <div class="check-row">
+            <label class="check"><input type="checkbox" id="maintenance-keep-worlds" checked><span data-i18n="maintenance.keepWorlds">Сохранить миры при сбросе</span></label>
+          </div>
+          <button id="maintenance-reset" class="btn ghost danger-btn" data-i18n="maintenance.reset">Сбросить инстанс</button>
+        </div>
+
+        <div class="card compact">
+          <h4>Очистка и диск</h4>
+          <div class="row-buttons">
+            <button id="maintenance-cleanup" class="btn ghost" data-i18n="maintenance.cleanup">Очистка</button>
+            <button id="maintenance-disk" class="btn ghost" data-i18n="maintenance.disk">Занято на диске</button>
+          </div>
+          <div id="maintenance-disk-output" class="disk-list"></div>
+        </div>
+
+        <div class="card compact">
+          <h4 data-i18n="maintenance.backups">Бэкапы</h4>
+          <button id="maintenance-backup" class="btn" data-i18n="maintenance.backup">Создать бэкап</button>
+          <div id="maintenance-backups" class="backup-list"></div>
+        </div>
+      </div>
+
+      <div id="maintenance-progress-wrap" class="progress-wrap hidden">
+        <div class="progress-track"><div id="maintenance-progress-bar" class="progress-bar"></div></div>
+        <div class="progress-meta">
+          <span id="maintenance-progress-stage">Обслуживание</span>
+          <span id="maintenance-progress-file" class="progress-file"></span>
+          <span id="maintenance-progress-percent"></span>
+        </div>
+      </div>
+
+      <div id="maintenance-report" class="report hidden"></div>
+    </div>
+  </div>
+
+  <!-- ==================== CRASH ==================== -->
+  <div id="crash-modal" class="modal hidden">
+    <div class="modal-card wide crash-modal-card">
+      <div class="modal-head">
+        <div>
+          <h3 data-i18n="maintenance.crashTitle">Анализ краша</h3>
+          <p class="muted small" id="crash-file"></p>
+        </div>
+        <button id="crash-close" class="win-btn close" title="Закрыть" aria-label="Закрыть">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2.4 2.4l5.2 5.2M7.6 2.4L2.4 7.6" stroke="currentColor" stroke-width="1.4"/></svg>
+        </button>
+      </div>
+      <div id="crash-summary" class="crash-summary"></div>
+      <h4 data-i18n="maintenance.causes">Вероятные причины</h4>
+      <div id="crash-causes" class="cause-list"></div>
+      <h4 data-i18n="maintenance.excerpt">Последние строки лога</h4>
+      <pre id="crash-excerpt" class="crash-excerpt"></pre>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
