@@ -34,7 +34,13 @@ function extractRelease(data, feed) {
   if (!version) throw new Error('В ответе нет версии обновления.');
   let url = release.downloadUrl || release.download_url || '';
   if (!url && Array.isArray(release.assets)) {
-    const asset = release.assets.find((item) => /\.exe$/i.test(item.name || item.browser_download_url || ''));
+    const exe = release.assets.find((item) => /\.exe$/i.test(item.name || item.browser_download_url || ''));
+    // Prefer the installer over the portable build: auto-update must replace
+    // the installed app, not start a second portable copy.
+    const installer = release.assets.find(
+      (item) => /\.exe$/i.test(item.name || '') && /(setup|installer|install)/i.test(item.name || '')
+    );
+    const asset = installer || exe;
     url = asset?.browser_download_url || asset?.url || '';
   }
   if (!url && /^https?:\/\//i.test(release.html_url || '')) {
