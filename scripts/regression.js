@@ -189,8 +189,16 @@ function makeZip(file, entries) {
   });
   discordConfig.data.discordClientId = '';
   assert.strictEqual(discord.status().builtin, true, 'empty setting falls back to the built-in ID');
+  const buttons = discord.resolveButtons();
+  assert.strictEqual(buttons.length, 2, 'at most two rich presence buttons');
+  assert.ok(buttons.every((b) => /^https:\/\//.test(b.url) && b.label.length <= 32));
+  assert.ok(buttons[0].url.endsWith('/releases/latest'), 'first button opens the download page');
+  discordConfig.data.language = 'en';
+  assert.strictEqual(discord.resolveButtons()[0].label, 'Download launcher');
+  discordConfig.data.language = 'ru';
+  assert.strictEqual(discord.resolveButtons()[0].label, 'Скачать лаунчер');
   discord.stop();
-  ok('discord rich presence is always on and resolves its application id');
+  ok('discord rich presence is always on and exposes download buttons');
 
   // ---------------- sync ----------------
   const syncConfig = new Config(path.join(DATA_DIR, 'config-sync.json'), GAME_DIR);

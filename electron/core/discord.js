@@ -13,6 +13,11 @@ const OP_PONG = 4;
 // a secret. A non-empty ID in Settings overrides this built-in one.
 const BUILTIN_CLIENT_ID = '1571927876310274119';
 
+// Rich Presence buttons are plain links: Discord opens them in the browser.
+// Only https:// URLs are accepted, and at most two buttons are displayed.
+const RELEASES_URL = 'https://github.com/zavodcikovtoboj-ship-it/MineLauncher/releases/latest';
+const REPO_URL = 'https://github.com/zavodcikovtoboj-ship-it/MineLauncher';
+
 function encodeFrame(op, payload) {
   const data = Buffer.from(JSON.stringify(payload), 'utf8');
   const frame = Buffer.allocUnsafe(8 + data.length);
@@ -90,12 +95,21 @@ class DiscordRpc {
     return this.status();
   }
 
+  resolveButtons() {
+    const en = String(this.config.get('language') || 'ru') === 'en';
+    return [
+      { label: en ? 'Download launcher' : 'Скачать лаунчер', url: RELEASES_URL },
+      { label: 'GitHub', url: REPO_URL },
+    ];
+  }
+
   sendActivity() {
     if (!this.socket || !this.connected) return;
     const activity = {
       details: this.activity.details,
       state: this.activity.state,
       timestamps: { start: this.activity.startTimestamp },
+      buttons: this.resolveButtons(),
       instance: false,
     };
     this.send(OP_FRAME, {
@@ -195,6 +209,10 @@ class DiscordRpc {
       }
       if (op === OP_PING) {
         this.send(OP_PONG, data);
+        continue;
+      }
+      if (data?.evt === 'ERROR') {
+        this.log(`Discord RPC: ${data.data?.message || 'ошибка запроса'}`);
         continue;
       }
       if (data?.evt === 'READY' || data?.cmd === 'DISPATCH') {
