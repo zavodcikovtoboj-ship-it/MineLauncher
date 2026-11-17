@@ -6,6 +6,7 @@
   "main": "electron/main.js",
   "author": "Lewis",
   "license": "SEE LICENSE IN LICENSE",
+  "private": true,
   "scripts": {
     "start": "electron .",
     "dry-run": "node scripts/dry-run.js",
