@@ -1,7 +1,7 @@
 {
   "name": "mine-launcher",
   "productName": "MineLauncher",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Minecraft launcher with loaders, modpacks, offline and Microsoft accounts",
   "main": "electron/main.js",
   "author": "Lewis",

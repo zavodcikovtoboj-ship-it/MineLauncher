@@ -48,7 +48,7 @@ const { flattenArgs, substitute } = require('../electron/core/launcher');
     version_type: version.type,
     natives_directory: nativesDir,
     launcher_name: 'MineLauncher',
-    launcher_version: '1.0.0',
+    launcher_version: '1.0.1',
     classpath: [...classpath, path.join(os.tmpdir(), 'client.jar')].join(';'),
     user_properties: '{}',
     resolution_width: '1280',
